@@ -1,5 +1,6 @@
 import React, {FC, memo, useCallback} from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from '../../../assets/colors';
 
 export interface DayType {
@@ -21,6 +22,7 @@ const DayItem: FC<Props> = ({date, isActive, onPress}) => {
 
   return (
     <TouchableOpacity
+      activeOpacity={1}
       onPress={_onPress}
       style={[styles.container, isActive && styles.activeContainer]}>
       <Text

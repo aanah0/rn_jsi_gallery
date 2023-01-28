@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
-import React, {useCallback, useState} from 'react';
-import {Button, StatusBar, StyleSheet, View} from 'react-native';
-import {useSharedValue, withTiming} from 'react-native-reanimated';
+import React, {useState} from 'react';
+import {StatusBar, StyleSheet, View} from 'react-native';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -11,42 +11,54 @@ import Calendar from '../../common/Calendar';
 import Spacer from '../../common/Spacer';
 import CalendarHeader from './components/CalendarHeader';
 
+enum CollappseState {
+  OPEN = 0,
+  CLOSED = 1,
+}
+
 const CalendarScreen = () => {
-  const collapsible = useSharedValue<number>(0);
+  const collapsible = useSharedValue<CollappseState>(CollappseState.OPEN);
 
   const [activeDate, setActiveDate] = useState(new Date());
 
-  const toggleCalendarView = useCallback(() => {
-    collapsible.value = withTiming(collapsible.value === 0 ? 1 : 0);
-  }, [collapsible]);
-
-  const onNextDay = useCallback(() => {
-    setActiveDate(_activeDate =>
-      dayjs(_activeDate).clone().add(1, 'day').toDate(),
-    );
-  }, []);
-
-  const onPrevDay = useCallback(() => {
-    setActiveDate(_activeDate =>
-      dayjs(_activeDate).clone().subtract(1, 'day').toDate(),
-    );
-  }, []);
+  const gesture = Gesture.Pan().onUpdate(e => {
+    if (collapsible.value === CollappseState.OPEN && e.translationY < -40) {
+      collapsible.value = withTiming(CollappseState.CLOSED);
+    }
+    if (collapsible.value === CollappseState.CLOSED && e.translationY > 40) {
+      collapsible.value = withTiming(CollappseState.OPEN);
+    }
+  });
 
   return (
     <SafeAreaView style={[sharedStyles.flex1, styles.bg]}>
       <StatusBar barStyle="light-content" />
+
       <CalendarHeader date={activeDate} />
-      <View style={styles.contentPadding}>
-        <Spacer height={16} />
-        <Calendar
-          date={activeDate}
-          setActiveDate={setActiveDate}
-          collapsible={collapsible}
-        />
-      </View>
-      <Button title="Toggle" onPress={toggleCalendarView} />
-      <Button title="Prev Day" onPress={onPrevDay} />
-      <Button title="Next Day" onPress={onNextDay} />
+
+      <GestureDetector gesture={gesture}>
+        <Animated.View>
+          <View style={styles.contentPadding}>
+            <Spacer height={16} />
+
+            <Calendar
+              date={activeDate}
+              setActiveDate={setActiveDate}
+              collapsible={collapsible}
+            />
+          </View>
+
+          <Spacer height={2} />
+
+          <View style={sharedStyles.rowAlignCenterJustifyCenter}>
+            <View style={styles.gestureMark} />
+          </View>
+
+          <Spacer height={8} />
+
+          <View style={styles.calendarDelimiter} />
+        </Animated.View>
+      </GestureDetector>
     </SafeAreaView>
   );
 };
@@ -57,6 +69,16 @@ const styles = StyleSheet.create({
   },
   contentPadding: {
     paddingHorizontal: 20,
+  },
+  calendarDelimiter: {
+    width: '100%',
+    backgroundColor: colors.delimiter,
+    height: 1,
+  },
+  gestureMark: {
+    backgroundColor: colors.border,
+    width: 48,
+    height: 6,
   },
 });
 

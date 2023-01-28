@@ -16,6 +16,11 @@ export const sharedStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  rowAlignCenterJustifyCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   w100: {
     width: '100%',
   },
