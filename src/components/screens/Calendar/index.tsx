@@ -8,8 +8,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '../../../assets/colors';
 import {sharedStyles} from '../../../assets/styles';
 import Calendar from '../../common/Calendar';
+import Separator from '../../common/Separator';
 import Spacer from '../../common/Spacer';
 import CalendarHeader from './components/CalendarHeader';
+import EventsList from './components/EventsList';
 
 enum CollappseState {
   OPEN = 0,
@@ -56,9 +58,10 @@ const CalendarScreen = () => {
 
           <Spacer height={8} />
 
-          <View style={styles.calendarDelimiter} />
+          <Separator />
         </Animated.View>
       </GestureDetector>
+      <EventsList activeDate={activeDate} setActiveDate={setActiveDate} />
     </SafeAreaView>
   );
 };
@@ -69,11 +72,6 @@ const styles = StyleSheet.create({
   },
   contentPadding: {
     paddingHorizontal: 20,
-  },
-  calendarDelimiter: {
-    width: '100%',
-    backgroundColor: colors.delimiter,
-    height: 1,
   },
   gestureMark: {
     backgroundColor: colors.border,

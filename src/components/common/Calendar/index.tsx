@@ -146,7 +146,7 @@ const Calendar: FC<Props> = ({date, setActiveDate, collapsible}) => {
         <Animated.View style={transformStyle}>
           {month.map(_month => (
             <Animated.View
-              key={`month_${_month[0].day}`}
+              key={`month_${_month[0].date.toISOString()}`}
               style={sharedStyles.rowAlignCenterJustifySpaceBetween}>
               {_month.map(_date => (
                 <DayItem
