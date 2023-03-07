@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import React, {
   Dispatch,
   FC,
@@ -8,10 +7,12 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import {SectionList, View, ViewToken} from 'react-native';
+import {ListRenderItem, View, ViewToken} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {sharedStyles} from '../../../../assets/styles';
 import SectionHeader from './SectionHeader';
 import SectionItem from './SectionItem';
+import dayjs from 'dayjs';
 
 interface Props {
   activeDate: Date;
@@ -32,7 +33,7 @@ interface EventListDataItem {
 
 const EventsList: FC<Props> = ({activeDate, setActiveDate}) => {
   const firstVisibleItem = useRef<Date>(new Date());
-  const sectionList = useRef<SectionList>(null);
+  const sectionList = useRef<FlatList>(null);
 
   const _data = useMemo<EventsList>(() => {
     const array: EventsList = [];
@@ -48,48 +49,54 @@ const EventsList: FC<Props> = ({activeDate, setActiveDate}) => {
   }, []);
 
   useEffect(() => {
-    if (activeDate !== firstVisibleItem.current) {
-      sectionList.current?.scrollToLocation({
-        sectionIndex: _data.findIndex(
-          _dataItem =>
-            _dataItem.data[0].date.toISOString() === activeDate.toISOString(),
-        ),
-        itemIndex: 0,
-      });
-    }
+    // if (activeDate !== firstVisibleItem.current) {
+    //   sectionList.current?.scrollToLocation({
+    //     sectionIndex: _data.findIndex(
+    //       _dataItem =>
+    //         _dataItem.data[0].date.toISOString() === activeDate.toISOString(),
+    //     ),
+    //     itemIndex: 0,
+    //   });
+    // }
   }, [_data, activeDate]);
 
   const onViewableItemsChanged = useCallback(
     (info: {viewableItems: ViewToken[]; changed: ViewToken[]}) => {
       const _firstVisibleItem = info.viewableItems[0]?.item;
-      if (_firstVisibleItem?.date) {
-        setActiveDate(_firstVisibleItem.date);
-        firstVisibleItem.current = _firstVisibleItem.date;
+      if (_firstVisibleItem?.data?.[0]?.date) {
+        setActiveDate(_firstVisibleItem?.data?.[0]?.date);
+        firstVisibleItem.current = _firstVisibleItem?.data?.[0]?.date;
       }
     },
     [setActiveDate],
   );
 
-  const renderItem = useCallback(() => <SectionItem data={null} />, []);
-  const renderSectionHeader = useCallback(
-    (info: any) => <SectionHeader title={info.section.title} />,
-    [],
-  );
+  const renderItem = useCallback<ListRenderItem<any>>(({item}) => {
+    return (
+      <>
+        <SectionHeader title={item.title} />
+        <SectionItem data={null} />
+      </>
+    );
+  }, []);
 
   return (
     <View style={sharedStyles.flex1}>
-      <SectionList
+      <FlatList
         ref={sectionList}
         bounces={false}
         onViewableItemsChanged={onViewableItemsChanged}
         scrollEventThrottle={16}
-        sections={_data}
+        data={_data}
         keyExtractor={(item, index) => {
           return `${item?.date?.toISOString?.() || 0}` + index;
         }}
         renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        stickySectionHeadersEnabled={false}
+        viewabilityConfig={{
+          minimumViewTime: 1,
+          viewAreaCoveragePercentThreshold: 1,
+          waitForInteraction: false,
+        }}
       />
     </View>
   );
