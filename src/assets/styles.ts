@@ -1,8 +1,22 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+import {colors} from './colors';
+
+export const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;
 
 export const sharedStyles = StyleSheet.create({
   flex1: {
     flex: 1,
+  },
+  screenWrap: {
+    backgroundColor: colors.background,
+    flex: 1,
+  },
+  textPrimaryColor: {
+    color: colors.primaryText,
+  },
+  textSecondaryColor: {
+    color: colors.secondaryText,
   },
   row: {
     flexDirection: 'row',

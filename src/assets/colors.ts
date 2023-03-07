@@ -5,4 +5,5 @@ export const colors = {
   secondaryText: 'rgb(92, 92, 92)',
   delimiter: 'rgb(40, 40, 40)',
   border: 'rgb(30, 30, 30)',
+  white: '#fff',
 };
