@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import {StatusBar} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {sharedStyles} from './src/assets/styles';
@@ -17,7 +17,5 @@ function App(): JSX.Element {
     </>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
