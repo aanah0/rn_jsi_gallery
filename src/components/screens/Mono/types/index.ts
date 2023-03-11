@@ -1,6 +1,11 @@
 export enum BottomSheetState {
-  OPEN = 1,
   CLOSE = 0,
+  OPEN = 1,
+}
+
+export enum SelectCardScreenState {
+  CLOSE = 0,
+  OPEN = 1,
 }
 
 export enum ScreenState {
