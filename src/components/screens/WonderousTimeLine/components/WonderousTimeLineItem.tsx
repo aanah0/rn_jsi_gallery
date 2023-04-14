@@ -119,7 +119,7 @@ const WonderousTimeLineItem: FC<Props> = ({
         },
       ]}>
       <Animated.View style={parallaxStyle}>
-        <Image style={sharedStyles.wh100} resizeMode="center" source={image} />
+        <Image style={sharedStyles.wh100} resizeMode="stretch" source={image} />
       </Animated.View>
     </Animated.View>
   );

@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useRef, useState, useTransition} from 'react';
+import React, {FC, useCallback, useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {
   runOnJS,
@@ -20,16 +20,12 @@ const round = (v: number, step: number = 10) => {
 };
 
 const Line: FC<Props> = ({availableHeight = screenWidth, activeYear}) => {
-  const [, startTransition] = useTransition();
-
   const yearRef = useRef(`${WONDEROUS_TIMELINE_START_YEAR} BCE`);
   const [year, setYear] = useState(yearRef.current);
   const top = availableHeight / 2;
 
   const updateState = useCallback((newYear: string) => {
-    startTransition(() => {
-      setYear(newYear);
-    });
+    setYear(newYear);
   }, []);
 
   useAnimatedReaction(
