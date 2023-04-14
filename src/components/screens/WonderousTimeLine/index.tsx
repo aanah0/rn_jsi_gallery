@@ -3,7 +3,6 @@ import {View} from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
-  useAnimatedReaction,
   useAnimatedScrollHandler,
   useDerivedValue,
   useSharedValue,
@@ -15,6 +14,7 @@ import Line from './components/Line';
 import WonderousHeader, {
   WONDEROUS_HEADER_HEIGHT,
 } from './components/WonderousHeader';
+import WonderousTimeLineItem from './components/WonderousTimeLineItem';
 import YearItem, {
   YEAR_ITEM_DEFAULT_HEIGHT,
   YEAR_ITEM_EXPANDED_HEIGHT,
@@ -23,6 +23,7 @@ import {
   WONDEROUS_TIMELINE_END_YEAR,
   WONDEROUS_TIMELINE_START_YEAR,
   WONDEROUS_TIMELINE_YEARS,
+  WOUNDEROUS_ITEMS,
 } from './data';
 
 const WonderousTimeLine: FC = () => {
@@ -51,18 +52,12 @@ const WonderousTimeLine: FC = () => {
     [scrollY],
   );
 
-  useAnimatedReaction(
-    () => activeYear.value,
-    (_, activeYear) => {
-      console.log('activeYear:::', activeYear);
-    },
-  );
-
   return (
     <SafeAreaView style={sharedStyles.screenWrap}>
       <WonderousHeader />
       <View style={sharedStyles.flex1}>
         <Animated.ScrollView
+          scrollEventThrottle={16}
           onScroll={scrollHandler}
           style={sharedStyles.flex1}
           contentContainerStyle={{
@@ -78,8 +73,16 @@ const WonderousTimeLine: FC = () => {
               }
             />
           ))}
+          {WOUNDEROUS_ITEMS.map((_item, i) => (
+            <WonderousTimeLineItem
+              key={`WOUNDEROUS_ITEMS_${_item.startYear}_${i}`}
+              {..._item}
+              availableHeight={availableHeight}
+              activeYear={activeYear}
+            />
+          ))}
         </Animated.ScrollView>
-        <Line availableHeight={availableHeight} />
+        <Line availableHeight={availableHeight} activeYear={activeYear} />
       </View>
     </SafeAreaView>
   );

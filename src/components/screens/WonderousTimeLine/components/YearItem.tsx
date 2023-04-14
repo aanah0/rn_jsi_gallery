@@ -3,11 +3,12 @@ import {View, Text, StyleSheet} from 'react-native';
 import {colors} from '../../../../assets/colors';
 import Spacer from '../../../common/Spacer';
 
-const YEAR_ITEM_SUB_STEP_HEIGHT = 5;
-const YEAR_ITEM_STEP_SPACER = YEAR_ITEM_SUB_STEP_HEIGHT * 10;
+export const YEAR_ITEM_SUB_STEP_HEIGHT = 5;
+export const YEAR_ITEM_STEP_SPACER = YEAR_ITEM_SUB_STEP_HEIGHT * 10;
 export const YEAR_ITEM_DEFAULT_HEIGHT = 18;
 export const YEAR_ITEM_EXPANDED_HEIGHT =
   YEAR_ITEM_DEFAULT_HEIGHT + YEAR_ITEM_STEP_SPACER;
+
 export const YEAR_ITEM_WIDTH = 60;
 
 interface Props {
