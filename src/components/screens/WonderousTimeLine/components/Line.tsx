@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useRef, useState, useTransition} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {
   runOnJS,
@@ -20,17 +20,28 @@ const round = (v: number, step: number = 10) => {
 };
 
 const Line: FC<Props> = ({availableHeight = screenWidth, activeYear}) => {
-  const [year, setYear] = useState(`${WONDEROUS_TIMELINE_START_YEAR} BCE`);
+  const [, startTransition] = useTransition();
+
+  const yearRef = useRef(`${WONDEROUS_TIMELINE_START_YEAR} BCE`);
+  const [year, setYear] = useState(yearRef.current);
   const top = availableHeight / 2;
+
+  const updateState = useCallback((newYear: string) => {
+    startTransition(() => {
+      setYear(newYear);
+    });
+  }, []);
 
   useAnimatedReaction(
     () => activeYear.value,
     (_, _activeYear) => {
       const __activeYear = _activeYear || WONDEROUS_TIMELINE_START_YEAR;
       const yearMark = __activeYear > 0 ? 'CE' : 'BCE';
-      runOnJS(setYear)(
-        `${Math.abs(round(__activeYear)).toFixed()} ${yearMark}`,
-      );
+      const newYear = `${Math.abs(round(__activeYear)).toFixed()} ${yearMark}`;
+      if (yearRef.current !== newYear) {
+        yearRef.current = newYear;
+        runOnJS(updateState)(newYear);
+      }
     },
   );
 

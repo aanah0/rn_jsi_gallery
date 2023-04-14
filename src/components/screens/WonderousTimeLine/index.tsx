@@ -11,6 +11,9 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {screenHeight, sharedStyles} from '../../../assets/styles';
 import Line from './components/Line';
+import WonderousScrollMap, {
+  WONDEROUS_SCROLL_MAP_HEIGHT,
+} from './components/ScrollMap';
 import WonderousHeader, {
   WONDEROUS_HEADER_HEIGHT,
 } from './components/WonderousHeader';
@@ -28,7 +31,12 @@ import {
 
 const WonderousTimeLine: FC = () => {
   const {top, bottom} = useSafeAreaInsets();
-  const availableHeight = screenHeight - top - bottom - WONDEROUS_HEADER_HEIGHT;
+  const availableHeight =
+    screenHeight -
+    top -
+    bottom -
+    WONDEROUS_HEADER_HEIGHT -
+    WONDEROUS_SCROLL_MAP_HEIGHT;
 
   const scrollY = useSharedValue(0);
 
@@ -41,15 +49,13 @@ const WonderousTimeLine: FC = () => {
     scrollY.value = event.contentOffset.y;
   });
 
-  const activeYear = useDerivedValue(
-    () =>
-      interpolate(
-        scrollY.value,
-        [0, maxScrollHeight],
-        [WONDEROUS_TIMELINE_START_YEAR, WONDEROUS_TIMELINE_END_YEAR],
-        Extrapolate.CLAMP,
-      ),
-    [scrollY],
+  const activeYear = useDerivedValue(() =>
+    interpolate(
+      scrollY.value,
+      [0, maxScrollHeight],
+      [WONDEROUS_TIMELINE_START_YEAR, WONDEROUS_TIMELINE_END_YEAR],
+      Extrapolate.CLAMP,
+    ),
   );
 
   return (
@@ -83,6 +89,7 @@ const WonderousTimeLine: FC = () => {
           ))}
         </Animated.ScrollView>
         <Line availableHeight={availableHeight} activeYear={activeYear} />
+        <WonderousScrollMap activeYear={activeYear} scrollY={scrollY} />
       </View>
     </SafeAreaView>
   );
