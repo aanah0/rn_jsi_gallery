@@ -21,6 +21,10 @@ const ROUTES = [
     title: 'Mono',
     route: 'MonoScreen',
   },
+  {
+    title: 'WonderousTimeLine',
+    route: 'WonderousTimeLine',
+  },
 ];
 
 const HomeScreen = () => {
