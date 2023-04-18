@@ -8,6 +8,11 @@ export const sharedStyles = StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  flex1Center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   screenWrap: {
     backgroundColor: colors.background,
     flex: 1,
