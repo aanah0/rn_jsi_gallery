@@ -4,6 +4,7 @@ import CalendarScreen from '../screens/Calendar';
 import HomeScreen from '../screens/Home';
 import MonoScreen from '../screens/Mono';
 import WonderousTimeLine from '../screens/WonderousTimeLine';
+import InstaMax from '../screens/InstaMax';
 
 const StackNavigator = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const StackNavigation = () => {
         name="WonderousTimeLine"
         component={WonderousTimeLine}
       />
+      <StackNavigator.Screen name="InstaMax" component={InstaMax} />
     </StackNavigator.Navigator>
   );
 };

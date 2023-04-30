@@ -6,6 +6,7 @@ import {
   FlatList,
   ListRenderItem,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors} from '../../assets/colors';
@@ -24,6 +25,10 @@ const ROUTES = [
   {
     title: 'WonderousTimeLine',
     route: 'WonderousTimeLine',
+  },
+  {
+    title: 'InstaMax',
+    route: 'InstaMax',
   },
 ];
 
@@ -52,6 +57,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={sharedStyles.screenWrap}>
+      <StatusBar barStyle="light-content" animated />
       <FlatList
         contentContainerStyle={styles.contentContainerStyle}
         data={ROUTES}
