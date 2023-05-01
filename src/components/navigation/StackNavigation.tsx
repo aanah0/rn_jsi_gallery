@@ -5,6 +5,7 @@ import HomeScreen from '../screens/Home';
 import MonoScreen from '../screens/Mono';
 import WonderousTimeLine from '../screens/WonderousTimeLine';
 import InstaMax from '../screens/InstaMax';
+import MediaItemScreen from '../screens/InstaMax/components/MediaItemScreen';
 
 const StackNavigator = createNativeStackNavigator();
 
@@ -24,6 +25,10 @@ const StackNavigation = () => {
         component={WonderousTimeLine}
       />
       <StackNavigator.Screen name="InstaMax" component={InstaMax} />
+      <StackNavigator.Screen
+        name="MediaItemScreen"
+        component={MediaItemScreen}
+      />
     </StackNavigator.Navigator>
   );
 };

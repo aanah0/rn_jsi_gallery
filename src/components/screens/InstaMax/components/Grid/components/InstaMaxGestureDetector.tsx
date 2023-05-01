@@ -1,7 +1,11 @@
 import React, {FC, PropsWithChildren} from 'react';
 import {StyleSheet} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
-import Animated, {SharedValue, useSharedValue} from 'react-native-reanimated';
+import Animated, {
+  SharedValue,
+  useSharedValue,
+  withDecay,
+} from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {screenHeight, screenWidth} from '../../../../../../assets/styles';
 import {STORIES_ROW_HEIGHT} from '../../StoriesRow';
@@ -35,6 +39,14 @@ const InstaMaxGestureDetector: FC<Props> = ({
     .onUpdate(event => {
       translateY.value = event.translationY + ctx.value.translateY;
       translateX.value = event.translationX + ctx.value.translateX;
+    })
+    .onEnd(event => {
+      translateY.value = withDecay({
+        velocity: event.velocityY,
+      });
+      translateX.value = withDecay({
+        velocity: event.velocityX,
+      });
     });
 
   return (
